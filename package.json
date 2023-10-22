@@ -1,0 +1,27 @@
+{
+  "name": "@adent/timelang",
+  "version": "1.0.0",
+  "description": "Konverze slovního vyjádření na čas",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maly/timelang.git"
+  },
+  "keywords": [
+    "date",
+    "czech"
+  ],
+  "author": "Martin Malý <maly@maly.cz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maly/timelang/issues"
+  },
+  "homepage": "https://github.com/maly/timelang#readme",
+  "directories": {
+    "test": "test"
+  }
+}
