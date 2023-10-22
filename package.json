@@ -1,6 +1,6 @@
 {
   "name": "@adent/timelang",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Konverze slovního vyjádření na čas",
   "main": "index.js",
   "type": "module",
