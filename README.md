@@ -46,6 +46,9 @@ Výchozí datum je *22. 10. 2023 9:00:00*
 | v půl jedenácté | 22. 10. 2023 10:30:00 |
 | v půl jedenácté večer | 22. 10. 2023 22:30:00 |
 | v půl páté | 22. 10. 2023 16:30:00 |
+| ve čtvrt na jedenáct | 22. 10. 2023 10:15:00 |
+| ve třičtvrtě na jedenáct | 22. 10. 2023 10:45:00 |
+| ve tři čtvrti na jedenáct | 22. 10. 2023 10:45:00 |
 | v úterý ve tři odpoledne | 24. 10. 2023 15:00:00 |
 | Zítra v poledne | 23. 10. 2023 12:00:00 |
 | 10.11.2024 | 10. 11. 2024 9:00:00 |
@@ -57,3 +60,4 @@ Výchozí datum je *22. 10. 2023 9:00:00*
 | pětadvacátého ve tři hodiny odpoledne | 25. 10. 2023 15:00:00 |
 | dvacátého pátého prosince ve tři hodiny odpoledne | 25. 12. 2023 15:00:00 |
 | dvacátého pátého ledna ve tři hodiny odpoledne | 25. 1. 2024 15:00:00 |
+| za měsíc v úterý | 28. 11. 2023 9:00:00 |
