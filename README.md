@@ -1,11 +1,11 @@
 # timelang
-## [ES6] Konverze slovního vyjádření času na date
+## [ES6] Konverze slovního vyjádření času na Date()
 
 Příklady:
 
 Výchozí datum je *22. 10. 2023 9:00:00*
 
-| Popis | čas |
+| Vstupní popis | Výsledný čas |
 | --- | --- |
 | za dvě hodiny | 22. 10. 2023 11:00:00 |
 | za čtvrt hodiny | 22. 10. 2023 9:15:00 |
