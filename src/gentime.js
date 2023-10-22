@@ -6,7 +6,6 @@ export const genTime = (parsed, dt=null) => {
     n = new Date();
     if (dt) n = new Date(dt)
 
-
     //změna
     let plus = {
         m:0,
@@ -36,39 +35,45 @@ export const genTime = (parsed, dt=null) => {
         dow:n.getDay()
     }
 
-    //console.log("NOW",now)
-
-    let mode = "@"
+    let mode = "@" //default: zadávám absolutní čas
     let lastNum = -1
     let lastFrac=-1
     let ampm = null
     let forceDay = null
+    let fractedHour = false
+    let forceDow = -1
+
     //a jedu. Beru parsované věci a řeším, co s nima
     while(parsed.length) {
         let p = parsed.shift()
         switch(p.c) {
-            case T.PRE:
+            
+            case T.PRE: //předložka. Přepíná režim
                 mode = p.val
                 break
             case T.NUM:
+
+                //číslovka ve dvou slovech. "Dvacátého pátého"
                 if (lastNum==20 || lastNum==30) {
                     lastNum += p.val
                     break
                 }
+
                 lastNum = p.val
                 break
             case T.TIM:
                 if (mode=="@") {
+                    //v daný čas
                     if (abs[p.val]>=0) {
                         abs[p.val] += lastNum
                         
                     }  else { 
                         abs[p.val] = lastNum
                     }
-                    if (p.val=="M") abs[p.val]--
+                    if (p.val=="M") abs[p.val]-- //měsíce jsou od nuly
                     lastNum=-1
                 } else {
-                    //za X něčeho
+                    //za danou dobu
                     if (lastFrac<0) {
                         if (lastNum<0) lastNum=1
                         plus[p.val] = lastNum   
@@ -77,10 +82,9 @@ export const genTime = (parsed, dt=null) => {
                         plus.m = lastFrac*15
                         lastFrac=-1
                     }
-                                         
-                    
                 }
                 break
+
             case T.MOD:
 
                 ampm = (p.val=="pm" || p.val=="ev") ? "pm" : "am"
@@ -93,20 +97,21 @@ export const genTime = (parsed, dt=null) => {
                 }
 
                 if (abs.h<0) {
+                    // jen denní doba bez dané hodiny, jako "zítra ráno"
                     if (p.val=="pm") {
-                        abs.h = 15
+                        abs.h = 15  //"odpoledne" = 15:00
                         break
                     }
                     if (p.val=="ev") {
-                        abs.h = 18
+                        abs.h = 18 //"večer" = 18:00
                         break
                     }
                     if (p.val=="am") {
-                        abs.h = 7
+                        abs.h = 7 //"ráno" = 7:00
                         break
                     }
                     if (p.val=="no") {
-                        abs.h = 10
+                        abs.h = 10 //"dopoledne" = 10:00
                         break
                     }
                 } else {
@@ -115,28 +120,28 @@ export const genTime = (parsed, dt=null) => {
                         break
                     }
                 }
-                //console.log(p)
                 break
+
             case T.DAY:
                 //nastavuju DOW
-                //console.log("DOW",p.val)
-
                 if (mode=="@") {
+                    //musím si nejprve ověřit případné modifikátory, co už proběhly, jako třeba "za měsíc v úterý". Takže tuhle změnu musím odložit
+                    forceDow = p.val
+                    /*
                     plus.d = p.val-now.dow
                     if (plus.d<0) plus.d += 7
+                    */
                     break
                 }
-                //console.log(p)
                 break
+
             case T.MONTH:
                 abs.M = p.val-1
-                //console.log("set abs m", abs.M)
-                //lastNum=-1
                 break
 
             case T.FRAC:                
                 if (mode=="@") {
-                    //v čtvrt apod. je to vždycky 15 minut
+                    //ve čtvrt apod. Je to vždycky 15 minut
                     lastFrac = p.val
                     if (abs.m<0) abs.m = 0
                     abs.m += p.val*15
@@ -146,13 +151,19 @@ export const genTime = (parsed, dt=null) => {
                     }
                     break
                 } else {
+                    // "za čtvrt hodiny" - jen si poznamenám, řeší se pak
                     lastFrac = p.val
                 }
 
                 break
             case T.HOUR:
                 if (mode=="@") {
-                    //abs.m = 
+                    if (p.val<0) {
+                        // čtvrt na jedenáct
+                        // odebereme hodinu
+                        fractedHour = true
+                    }
+                    // "v půl páté" - zlomková hodina
                     abs.h = p.val-1
                     break
                 }
@@ -246,8 +257,20 @@ export const genTime = (parsed, dt=null) => {
     if (abs.M>=0) n.setMonth(abs.M)
     if (abs.y>=0) n.setFullYear(abs.y)
 
+    if (fractedHour) {
+        n.setHours(n.getHours()-1)
+    }
+
+    //ještě posunu případný DOW
+    if (forceDow>=0) {
+        now.dow = n.getDay() //fix
+        let diff = forceDow-now.dow
+        if (diff<0) diff+=7
+        n.setDate(n.getDate()+diff)
+    }
+
+    //raději jo, ne?
     n.setSeconds(0)
 
-    //console.log(n.toLocaleString("cs"))
     return n
 }

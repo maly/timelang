@@ -1,12 +1,12 @@
 export const T = Object.freeze({
-    PRE: Symbol('preposition'),
-    NUM: Symbol('number'),
-    FRAC: Symbol('fraction'),
-    HOUR: Symbol('hourFraction'),
-    TIM: Symbol('time'),
-    DAY: Symbol('day'),
-    FDAY: Symbol('forcedDay'),
-    MONTH: Symbol('month'),
-    COMP: Symbol('compound'),
-    MOD: Symbol('modifier'),
+    PRE: Symbol('preposition'), //předložky
+    NUM: Symbol('number'), //čísla
+    FRAC: Symbol('fraction'), //zlomky
+    HOUR: Symbol('hourFraction'), //zlomkové hodiny
+    TIM: Symbol('time'), //časy
+    DAY: Symbol('day'), //den v týdnu
+    FDAY: Symbol('forcedDay'), //vnucený den
+    MONTH: Symbol('month'), // měsíc
+    COMP: Symbol('compound'), //složený symbol
+    MOD: Symbol('modifier'), //modifikáor denní doby
 })

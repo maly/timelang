@@ -5,6 +5,7 @@ const terms = [
     { t: 've', c: T.PRE, val:"@" },
     { t: 'v', c: T.PRE, val:"@" },
     { t: 'dne', c: T.PRE, val:"@" },
+    { t: 'na', c: T.HOUR, val:-1 },
 
     // číslovky
     { t: 'jedna' , c:T.NUM, val:1 },
@@ -36,6 +37,7 @@ const terms = [
     { t: 'půl', c:T.FRAC, val:2 }, 
     { t: 'třičtvrtě', c:T.FRAC, val:3 },
     { t: 'čtvrtě', c:T.FRAC, val:3 },
+    { t: 'čtvrti', c:T.FRAC, val:3 },
 
     //zlomková čísla
     {t:"jedné", c:T.HOUR, val:1},
@@ -177,7 +179,7 @@ const terms = [
     { t: 'dopoledne', c:T.MOD, val:"no" },
   ]
   
-
+// zrušení diakritiky
 const nodia = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")  
 
 export const parseTime = (text) => {
@@ -187,7 +189,7 @@ export const parseTime = (text) => {
     for (let t of ts) {
         //beru slovo po slovu
 
-        //fixes
+        //převod na malá písmena a odstranění diakritiky
         t=nodia(t).toLowerCase()
 
         //den, měsíc a rok ve formátu 10.10.2024
@@ -203,7 +205,6 @@ export const parseTime = (text) => {
             continue
         }
 
-
         //den a měsíc typu 10.10.
         let dm = t.match(/(\d\d?)\.(\d\d?)\./)
         if (dm) {
@@ -215,23 +216,22 @@ export const parseTime = (text) => {
             continue
         }
 
-
         //otestuju dny typu "10."
         let d = t.match(/(\d\d?)\./)
         if (d) {
             out.push({c:T.PRE, val:"@"})
             out.push({c:T.NUM, val:parseInt(d[1])})
             if (prenum=="") {
+                //je to den
                 out.push({c:T.TIM, val:"d"})
                 prenum="d"
             } else {
+                //den tohoto typu už byl, je to měsíc
                 out.push({c:T.TIM, val:"M"})
                 prenum="m"
             }
             continue
         }
-
-
 
         //otestuju hodiny typu 18:00
         let h = t.match(/(\d\d?):(\d\d)/)
@@ -244,7 +244,6 @@ export const parseTime = (text) => {
             continue
         }
 
-
         //otestuju číslo
         let num = parseInt(t)
         if (!isNaN(num)) {
@@ -252,9 +251,8 @@ export const parseTime = (text) => {
             continue
         }
 
-
-        //hledám ho v terms
-        //pokud ho najdu, nacpu do pole
+        //hledám výraz v terms
+        //pokud ho najdu, uložím do výstupního pole
 
         for (let term of terms) {
             if (t == nodia(term.t).toLowerCase()) {
@@ -266,6 +264,8 @@ export const parseTime = (text) => {
                 break
             }
         }
+
+        //nenašlo se nic. Tiše ignoruju
     }
     return out
 }

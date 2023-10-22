@@ -1,5 +1,4 @@
-import { parseTime } from "../src/cutcat.js"
-import {genTime} from "../src/gentime.js"
+import { text2time } from "../index.js"
 
 const terms=[
     
@@ -43,6 +42,9 @@ const terms=[
     {t:"v půl jedenácté",d:"22. 10. 2023 10:30:00"},
     {t:"v půl jedenácté večer",d:"22. 10. 2023 22:30:00"},
     {t:"v půl páté",d:"22. 10. 2023 16:30:00"},
+    {t:"ve čtvrt na jedenáct",d:"22. 10. 2023 10:15:00"},
+    {t:"ve třičtvrtě na jedenáct",d:"22. 10. 2023 10:45:00"},
+    {t:"ve tři čtvrti na jedenáct",d:"22. 10. 2023 10:45:00"},
     
     {t:"v úterý ve tři odpoledne",d:"24. 10. 2023 15:00:00"},
     {t:"Zítra v poledne",d:"23. 10. 2023 12:00:00"},
@@ -55,24 +57,19 @@ const terms=[
     {t:"pětadvacátého ve tři hodiny odpoledne",d:"25. 10. 2023 15:00:00"},
     {t:"dvacátého pátého prosince ve tři hodiny odpoledne",d:"25. 12. 2023 15:00:00"},
     {t:"dvacátého pátého ledna ve tři hodiny odpoledne",d:"25. 1. 2024 15:00:00"},
+    {t:"za měsíc v úterý",d:"28. 11. 2023 9:00:00"},
 ]
 
 let testDate = new Date("2023-10-22T09:00:00")
 console.log("Výchozí datum:",testDate.toLocaleString("cs"))
 
 for (let v of terms) {
-    //testDate = new Date("2023-10-22T09:00:00") //funkce si 
     let t = v.t
-    //console.log(t)
-    let pt = parseTime(t)
-    //console.log(pt)
-    let gt = genTime(pt, testDate).toLocaleString("cs")
+    let gt = text2time(t, testDate).toLocaleString("cs")
     if (gt == v.d) {
         console.log("[OK]", t,"=>", gt)
     } else {
         console.log("[>>>ERR]", t, gt, v.d)
-        console.log(parseTime(t))
     }
-    //break
     
 }
